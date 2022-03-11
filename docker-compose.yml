@@ -59,6 +59,7 @@ services:
         - ICUB_APPS=/usr/local/src/robot/applications
 
     command: ["/bin/bash", "-c", "terminator & bash /home/icub/init.sh"]
+    working_dir: /home/icub/pyicub-lab
 
     volumes:
       - type: bind
