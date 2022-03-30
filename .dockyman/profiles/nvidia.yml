@@ -26,11 +26,11 @@ version: '3.8'
 
 services:
 
-  common:
+  local:
 
     extends:
-      file: common.yml
-      service: common
+      file: ${LOCAL_PROFILE}
+      service: local
 
     deploy:
       resources:

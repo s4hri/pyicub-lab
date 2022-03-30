@@ -20,5 +20,3 @@ ENV PATH=$PATH:/home/icub/.local/bin
 ENV PYTHONPATH $PYTHONPATH:/home/icub/pyicub-lab/pyicub
 ENV YARP_COLORED_OUTPUT 1
 ENV YARP_FORWARD_LOG_ENABLE 1
-
-CMD ["/bin/bash", "-c", "terminator & bash /home/icub/init.sh"]

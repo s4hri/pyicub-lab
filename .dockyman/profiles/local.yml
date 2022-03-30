@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2022 Social Cognition in Human-Robot Interaction
 #                    Author: Davide De Tommaso (davide.detommaso@iit.it)
-#                    Project: Dockyman template
+#                    Project: Dockyman Template
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,26 @@ version: '3.8'
 
 services:
 
-  robotology.base:
-    image: ${PJT_DOCKER_IMAGE}
+  local:
+    image: ${PJT_DOCKER_IMAGE}.local
 
     build:
-      context: docker
+      context: ..
       args:
-        DOCKER_SRC: ${DOCKER_SRC}
-        PYICUB_VER: ${PYICUB_VER}
+        LOCAL_USER_ID: ${LOCAL_USER_ID}
+        LOCAL_GROUP_ID: ${LOCAL_GROUP_ID}
+        GROUP_AUDIO: ${GROUP_AUDIO}
+        GROUP_VIDEO: ${GROUP_VIDEO}
+        GROUP_INPUT: ${GROUP_INPUT}
+        GROUP_DIALOUT: ${GROUP_DIALOUT}
+        XDG_RUNTIME_DIR: ${XDG_RUNTIME_DIR}
+        DOCKER_SRC: ${PJT_DOCKER_IMAGE}
+        USERNAME: ${USERNAME}
+
+    extends:
+      file: ${LOCAL_PROFILE}
+      service: local
+
+    environment:
+        - PROJECT_NAME=${PROJECT_NAME}
+        - RELEASE=${RELEASE}

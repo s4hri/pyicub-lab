@@ -26,39 +26,26 @@ version: '3.8'
 
 services:
 
-  pyicub:
-    container_name: pyicub-lab.${RELEASE}
+  robotology:
     image: ${PJT_DOCKER_IMAGE}.local
-
-    build:
-      context: .dockyman
-      args:
-        LOCAL_USER_ID: ${LOCAL_USER_ID}
-        LOCAL_GROUP_ID: ${LOCAL_GROUP_ID}
-        GROUP_AUDIO: ${GROUP_AUDIO}
-        GROUP_VIDEO: ${GROUP_VIDEO}
-        GROUP_INPUT: ${GROUP_INPUT}
-        GROUP_DIALOUT: ${GROUP_DIALOUT}
-        XDG_RUNTIME_DIR: ${XDG_RUNTIME_DIR}
-        DOCKER_SRC: ${PJT_DOCKER_IMAGE}
-        USERNAME: icub
-
+    container_name: pyicub-lab.${RELEASE}
 
     extends:
-      file: ${BASE_SERVICE_FILENAME}
-      service: ${BASE_SERVICE_NAME}
+      file: .dockyman/profiles/local.yml
+      service: local
 
     environment:
-        - PROJECT_NAME=${PROJECT_NAME}
-        - RELEASE=${RELEASE}
-        - ICUB_SIMULATION=true
-        - ICUB_NAME=icubSim
-        - ICUB_USER=icub
-        - ICUB_PSW=icub
-        - ICUB_HOST=icub-head
-        - ICUB_APPS=/usr/local/src/robot/applications
+      - ICUB_SIMULATION=true
+      - ICUB_USER=icub
+      - ICUB_PSW=icub
+      - ICUB_HOST=icub-head
+      - ICUB_IP=10.0.0.2
+      - ICUBSRV_HOST=icubsrv
+      - ICUBSRV_IP=10.0.0.1
+      - ICUB_APPS=/usr/local/src/robot/applications
 
-    command: ["/bin/bash", "-c", "terminator & bash /home/icub/init.sh"]
+    command: ["/bin/bash", "-c", "terminator & bash /home/icub/shared/startup.sh"]
+
     working_dir: /home/icub/pyicub-lab
 
     volumes:
@@ -71,10 +58,6 @@ services:
         target: /home/icub/pyicub-lab
 
       - type: volume
-        source: pyicub-yarp-config
-        target: /home/icub/.config/yarp/
-
-      - type: volume
         source: pyicub-vscode-server
         target: /home/icub/.vscode-server
 
@@ -85,6 +68,5 @@ services:
 
 volumes:
   pyicub-lab:
-  pyicub-yarp-config:
   pyicub-vscode-server:
   pyicub-vscode-server-insiders:

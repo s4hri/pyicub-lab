@@ -30,7 +30,7 @@ export XP_TARGET_DIR=${CURRENT_DIR}/..
 
 source ${XP_SCRIPT_DIR}/setup.sh
 
-docker()
+base()
 {
   echo "Building project docker image ${PJT_DOCKER_IMAGE}"
   docker-compose -f ${XP_TARGET_DIR}/docker-compose.base.yml build $1
@@ -38,7 +38,7 @@ docker()
 
 local()
 {
-  echo "Pulling docker image ${PJT_DOCKER_IMAGE} and building local docker image ${LOCAL_DOCKER_IMAGE}, USERNAME: ${USERNAME}, LOCAL_UID: ${LOCAL_USER_ID}, GROUP_AUDIO: ${GROUP_AUDIO}, GROUP_VIDEO: ${GROUP_VIDEO}, GROUP_INPUT: ${GROUP_INPUT}, GROUP_DIALOUT: ${GROUP_DIALOUT}"
+  echo "Retrieving docker image ${PJT_DOCKER_IMAGE} and building local docker image ${LOCAL_DOCKER_IMAGE}, USERNAME: ${USERNAME}, LOCAL_UID: ${LOCAL_USER_ID}, GROUP_AUDIO: ${GROUP_AUDIO}, GROUP_VIDEO: ${GROUP_VIDEO}, GROUP_INPUT: ${GROUP_INPUT}, GROUP_DIALOUT: ${GROUP_DIALOUT}"
   docker-compose -f ${XP_TARGET_DIR}/docker-compose.yml build $1
 }
 
@@ -61,14 +61,15 @@ done
 
 if [ "$1" = "--no-cache" ]
 then
-  docker-compose -f ${XP_TARGET_DIR}/docker-compose.base.yml down -v --remove-orphans --rmi all
+  docker system prune
   docker-compose -f ${XP_TARGET_DIR}/docker-compose.yml down -v --remove-orphans --rmi all
-  docker $NO_CACHE
+  docker-compose -f ${XP_TARGET_DIR}/docker-compose.yml down -v --remove-orphans --rmi all
+  base $NO_CACHE
   local $NO_CACHE
 else
   if [ -z "$1" ]
   then
-    docker
+    base
     local
   fi
 fi
@@ -76,9 +77,9 @@ fi
 
 for var in "$@"
   do
-    if [ $var = "docker" ]
+    if [ $var = "base" ]
       then
-        docker $NO_CACHE
+        base $NO_CACHE
     fi
     if [ $var = "local" ]
       then

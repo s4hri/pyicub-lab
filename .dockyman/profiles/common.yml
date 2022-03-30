@@ -26,20 +26,34 @@ version: '3.8'
 
 services:
 
-  common:
-
-    extends:
-      file: common.yml
-      service: common
+  local:
 
     environment:
-        - DBUS_SESSION_BUS_ADDRESS=${DBUS_SESSION_BUS_ADDRESS}
+        - DISPLAY=${DISPLAY}
+        - QT_X11_NO_MITSHM=1
+        - PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native
+        - PULSE_COOKIE=/run/pulse/cookie
+        - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
+        - XDG_DATA_DIRS=${XDG_DATA_DIRS}
+
+    privileged: true
+    stdin_open: true
+    tty: true
+    network_mode: host
 
     volumes:
       - type: bind
-        source: /run/dbus/system_bus_socket
-        target: /run/dbus/system_bus_socket
+        source: /tmp/.X11-unix
+        target: /tmp/.X11-unix
 
       - type: bind
-        source: ${XDG_RUNTIME_DIR}/bus
-        target: ${XDG_RUNTIME_DIR}/bus
+        source: ${HOME}/.config/pulse/cookie
+        target: /run/pulse/cookie
+
+      - type: bind
+        source: ${XDG_RUNTIME_DIR}/pulse
+        target: ${XDG_RUNTIME_DIR}/pulse
+
+      - type: bind
+        source: ${XDG_RUNTIME_DIR}/dconf
+        target: ${XDG_RUNTIME_DIR}/dconf
