@@ -26,7 +26,7 @@ version: '3.8'
 
 services:
 
-  robotology:
+  pyicub-lab:
     image: ${PJT_DOCKER_IMAGE}.local
     container_name: pyicub-lab.${RELEASE}
 
@@ -46,27 +46,15 @@ services:
 
     command: ["/bin/bash", "-c", "terminator & bash /home/icub/shared/startup.sh"]
 
-    working_dir: /home/icub/pyicub-lab
-
     volumes:
       - type: bind
         source: ./shared
         target: /home/icub/shared
 
       - type: volume
-        source: pyicub-lab
-        target: /home/icub/pyicub-lab
-
-      - type: volume
-        source: pyicub-vscode-server
-        target: /home/icub/.vscode-server
-
-      - type: volume
-        source: pyicub-vscode-server-insiders
-        target: /home/icub/.vscode-server-insiders
+        source: pyicub-lab-home
+        target: /home/icub/
 
 
 volumes:
-  pyicub-lab:
-  pyicub-vscode-server:
-  pyicub-vscode-server-insiders:
+  pyicub-lab-home:
