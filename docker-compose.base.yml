@@ -26,7 +26,7 @@ version: '3.8'
 
 services:
 
-  robotology.base:
+  pyicub.base:
     image: ${PJT_DOCKER_IMAGE}
 
     build:

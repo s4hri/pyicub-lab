@@ -6,8 +6,8 @@ LABEL maintainer="Davide De Tommaso <davide.detommaso@iit.it>"
 
 ARG PYICUB_VER
 
-#WORKDIR /home/icub
+WORKDIR /home/icub
 
 USER icub
 
-RUN git clone https://github.com/s4hri/pyicub-apps
+RUN cd /home/icub && git clone https://github.com/s4hri/pyicub-apps
