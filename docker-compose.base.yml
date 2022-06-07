@@ -26,11 +26,5 @@ version: '3.8'
 
 services:
 
-  robotology.base:
+  pyicublab.base:
     image: ${PJT_DOCKER_IMAGE}
-
-    build:
-      context: docker
-      args:
-        DOCKER_SRC: ${DOCKER_SRC}
-        PYICUB_VER: ${PYICUB_VER}

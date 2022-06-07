@@ -68,7 +68,7 @@ RUN echo "${USERNAME}:${USERNAME}" | chpasswd
 RUN usermod -a -G root,sudo,${GROUP_AUDIO},${GROUP_VIDEO},${GROUP_INPUT},${GROUP_DIALOUT} "$(getent passwd ${LOCAL_USER_ID} | cut -d: -f1)"
 RUN chown -R ${LOCAL_USER_ID}:${LOCAL_USER_ID} ${WORKDIR}
 
-RUN rm /var/log/lastlog /var/log/faillog /var/log/dpkg.log
+RUN rm -f /var/log/lastlog /var/log/faillog /var/log/dpkg.log
 WORKDIR ${WORKDIR}
 
 ENV PATH=${PATH}:~/.local/bin:${WORKDIR}

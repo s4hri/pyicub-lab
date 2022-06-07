@@ -26,23 +26,25 @@ version: '3.8'
 
 services:
 
-  pyicub-lab:
+  pyicublab:
     image: ${PJT_DOCKER_IMAGE}.local
-    container_name: pyicub-lab.${RELEASE}
+    container_name: pyicublab.${RELEASE}
 
     extends:
       file: .dockyman/profiles/local.yml
       service: local
 
     environment:
-      - ICUB_SIMULATION=true
-      - ICUB_USER=icub
-      - ICUB_PSW=icub
-      - ICUB_HOST=icub-head
-      - ICUB_IP=10.0.0.2
-      - ICUBSRV_HOST=icubsrv
-      - ICUBSRV_IP=10.0.0.1
-      - ICUB_APPS=/usr/local/src/robot/applications
+      - ICUB_SIMULATION=${ICUB_SIMULATION}
+      - ICUB_USER=${ICUB_USER}
+      - ICUB_PSW=${ICUB_PSW}
+      - ICUB_HOST=${ICUB_HOST}
+      - ICUB_IP=${ICUB_IP}
+      - ICUBSRV_HOST=${ICUBSRV_HOST}
+      - ICUBSRV_IP=${ICUBSRV_IP}
+      - ICUB_APPS=${ICUB_APPS}
+      - PYICUB_LOGGING=${PYICUB_LOGGING}
+      - PYICUB_LOGGING_PATH=${PYICUB_LOGGING_PATH}
 
     command: ["/bin/bash", "-c", "terminator & bash /home/icub/shared/startup.sh"]
 
@@ -52,9 +54,9 @@ services:
         target: /home/icub/shared
 
       - type: volume
-        source: pyicub-lab-home
+        source: pyicublab-home
         target: /home/icub/
 
 
 volumes:
-  pyicub-lab-home:
+  pyicublab-home:

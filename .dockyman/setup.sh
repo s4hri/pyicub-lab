@@ -56,14 +56,14 @@ install_reqs()
 {
 	echo "Checking Docker ..."
 	if which docker
-  then
-	    echo "docker found, skipping"
+	then
+		echo "docker found, skipping"
 	else
-	    echo "docker not found, installing"
-	    if -e /etc/os-release
-      then
-	        if cat /etc/os-release | grep Ubuntu
-          then
+		echo "docker not found, installing"
+		if test -e /etc/os-release
+		then
+			if cat /etc/os-release | grep Ubuntu
+			then
 	            echo "Found Ubuntu, proceeding with docker-ce install"
 	            echo "sudo apt update"
 	            sudo apt update
@@ -81,24 +81,24 @@ install_reqs()
 	fi
 	echo "Checking docker-compose ..."
 	if which docker-compose
-  then
-	    echo "docker-compose found, skipping"
+	then
+		echo "docker-compose found, skipping"
 	else
 	    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m`" -o /usr/local/bin/docker-compose
 	    sudo chmod 777 /usr/local/bin/docker-compose
 	fi
 	echo "Checking nvidia container runtime ..."
 	if lsmod | grep nvidia
-  then
-	    echo "found nvidia card drivers"
+	then
+		echo "found nvidia card drivers"
 		if which nvidia-container-runtime-hook
-    then
+	then
 	        echo "found nvidia container runtime, skipping"
-	    else
-	        if -e /etc/os-release
-          then
-	            if cat /etc/os-release | grep Ubuntu
-              then
+		else
+			if test -e /etc/os-release
+			then
+				if cat /etc/os-release | grep Ubuntu
+				then
 	                echo "Adding nvidia apt repository for ${ID}${VERSION_ID}"
 	                curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey |   sudo apt-key add -
 	                curl -s -L https://nvidia.github.io/nvidia-container-runtime/${ID}${VERSION_ID}/nvidia-container-runtime.list |   sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list
@@ -112,11 +112,12 @@ install_reqs()
 	fi
 	echo "Checking if user in group docker ..."
 	if groups | grep -o docker
-  then
-	    echo "user ${USER} already in group docker"
+	then
+		echo "user ${USER} already in group docker"
 	else
-	    sudo usermod -aG docker ${USER}
-			echo "!!! Please reboot your computer for these changes to take effect!!!"
+		sudo usermod -aG docker ${USER}
+		echo "!!! Please reboot your computer for these changes to take effect!!!"
+		exit
 	fi
 	echo "All Docker requirements are satisfied!"
 }
