@@ -78,7 +78,7 @@ services:
     volumes:
       - type: volume
         source: pyicub-frontend-workspace
-        target: /home/icub/
+        target: /app/pyicub-frontend
 
 volumes:
   pyicub-home:
