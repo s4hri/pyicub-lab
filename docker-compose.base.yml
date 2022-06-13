@@ -26,5 +26,5 @@ version: '3.8'
 
 services:
 
-  pyicublab.base:
+  pyicub.base:
     image: ${PJT_DOCKER_IMAGE}

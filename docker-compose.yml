@@ -26,9 +26,9 @@ version: '3.8'
 
 services:
 
-  pyicublab:
+  pyicub:
     image: ${PJT_DOCKER_IMAGE}.local
-    container_name: pyicublab.${RELEASE}
+    container_name: pyicub.${RELEASE}
 
     extends:
       file: .dockyman/profiles/local.yml
@@ -58,9 +58,28 @@ services:
         target: /home/icub/shared
 
       - type: volume
-        source: pyicublab-home
+        source: pyicub-home
         target: /home/icub/
 
+  pyicub-frontend:
+    image: iitschri/pyicub-frontend:${RELEASE}
+    container_name: pyicub-frontend.${RELEASE}
+
+    extends:
+      file: .dockyman/profiles/local.yml
+      service: local
+
+    environment:
+      - PORT=${PYICUB_API_FRONTEND_PORT}
+      - REACT_APP_API=pyicub
+      - REACT_APP_PROXY=http://${PYICUB_API_BACKEND_HOST}:${PYICUB_API_BACKEND_PORT}
+      - REACT_APP_NAME="appname"
+
+    volumes:
+      - type: volume
+        source: pyicub-frontend-workspace
+        target: /home/icub/
 
 volumes:
-  pyicublab-home:
+  pyicub-home:
+  pyicub-frontend-workspace:
