@@ -49,7 +49,6 @@ services:
       - PYICUB_API_BACKEND_HOST=${PYICUB_API_BACKEND_HOST}
       - PYICUB_API_BACKEND_PORT=${PYICUB_API_BACKEND_PORT}
 
-
     command: ["/bin/bash", "-c", "terminator & bash /home/icub/shared/startup.sh"]
 
     volumes:
@@ -62,12 +61,11 @@ services:
         target: /home/icub/
 
   pyicub-frontend:
-    image: iitschri/pyicub-frontend:${RELEASE}
+    image: ${PYICUB_FRONTEND_DOCKER_IMAGE}
     container_name: pyicub-frontend.${RELEASE}
 
-    extends:
-      file: .dockyman/profiles/local.yml
-      service: local
+    build:
+      context: docker/frontend
 
     environment:
       - PORT=${PYICUB_API_FRONTEND_PORT}

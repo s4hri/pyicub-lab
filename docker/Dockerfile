@@ -2,7 +2,6 @@
 #
 # Copyright (c) 2022 Social Cognition in Human-Robot Interaction
 #                    Author: Davide De Tommaso (davide.detommaso@iit.it)
-#                    Project: Dockyman template
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +21,37 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-version: '3.8'
+ARG DOCKER_SRC
+FROM $DOCKER_SRC
 
-services:
+LABEL maintainer="Davide De Tommaso <davide.detommaso@iit.it>"
 
-  pyicub.base:
-    image: ${PJT_DOCKER_IMAGE}
+ARG RELEASE=master
+ARG PYICUB_BRANCH=master
 
-    build:
-      context: docker
-      args:
-        DOCKER_SRC: ${DOCKER_SRC}
-        RELEASE: ${RELEASE}
+WORKDIR /home/icub
+
+USER icub
+
+ENV PATH=$PATH:/home/icub/.local/bin
+
+RUN cd /home/icub && \
+    git clone https://github.com/s4hri/pyicub -b ${PYICUB_BRANCH} && \
+    cd pyicub && \
+    git checkout ${RELEASE} && \
+    pip3 install -r requirements.txt
+
+ENV PYTHONPATH $PYTHONPATH:/home/icub/pyicub
+ENV YARP_COLORED_OUTPUT 1
+ENV ICUB_SIMULATION true
+ENV ICUB_USER icub
+ENV ICUB_PSW icub
+ENV ICUB_HOST icub-head
+ENV ICUB_IP 10.0.0.2
+ENV ICUBSRV_HOST=icubsrv
+ENV ICUBSRV_IP=10.0.0.1
+ENV ICUB_APPS=/usr/local/src/robot/applications
+ENV PYICUB_LOGGING=true
+ENV PYICUB_API=false
+ENV PYICUB_API_BACKEND_HOST=9000
+ENV PYICUB_API_BACKEND_PORT=9001

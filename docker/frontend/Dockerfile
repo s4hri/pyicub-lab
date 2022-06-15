@@ -1,8 +1,8 @@
 # MIT License
 #
 # Copyright (c) 2022 Social Cognition in Human-Robot Interaction
-#                    Author: Davide De Tommaso (davide.detommaso@iit.it)
-#                    Project: Dockyman template
+#                    Author: Nicola Severino Russi (nicola.russi@iit.it)
+#                            Davide De Tommaso (davide.detommaso@iit.it)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-version: '3.8'
+FROM node:14.16.1
 
-services:
+RUN mkdir /app
+WORKDIR /app
 
-  pyicub.base:
-    image: ${PJT_DOCKER_IMAGE}
+# Create react app
+RUN npx create-react-app pyicub-frontend
 
-    build:
-      context: docker
-      args:
-        DOCKER_SRC: ${DOCKER_SRC}
-        RELEASE: ${RELEASE}
+# Define work directory
+WORKDIR /app/pyicub-frontend
+
+RUN npm ci
+RUN npm install @mui/material @emotion/react @emotion/styled
+RUN npm install bootstrap@3
+RUN npm install react-iframe
+RUN npm install react-router-dom@6
+RUN npm i react-icons
+RUN npm install http-proxy-middleware --save
+
+RUN mkdir -p /root/.vscode-server /root/.vscode-server-insiders
+RUN git clone https://github.com/s4hri/pyicub-frontend -b master tmp
+RUN cd tmp && git checkout ${RELEASE}
+RUN cp -a tmp/. /app/pyicub-frontend/
+RUN rm -rf tmp
+
+CMD ["npm", "start"]
