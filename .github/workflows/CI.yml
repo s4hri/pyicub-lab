@@ -48,7 +48,7 @@ jobs:
             sed -i -e "/ICUB_DISTRO=/c\ICUB_DISTRO=$(cut -d'_' -f3 <<<"${{ steps.tag.outputs.tag }}")" .env
             cat .env
             source .env && docker build docker --build-arg DOCKER_SRC=${DOCKER_SRC} -t ${PJT_DOCKER_IMAGE} && docker push ${PJT_DOCKER_IMAGE}
-            source .env && docker build docker/frontend --build-arg -t ${PYICUB_FRONTEND_DOCKER_IMAGE} && docker push ${PYICUB_FRONTEND_DOCKER_IMAGE}
+            source .env && docker build docker/frontend -t ${PYICUB_FRONTEND_DOCKER_IMAGE} && docker push ${PYICUB_FRONTEND_DOCKER_IMAGE}
        env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
