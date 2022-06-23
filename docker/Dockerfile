@@ -29,6 +29,9 @@ LABEL maintainer="Davide De Tommaso <davide.detommaso@iit.it>"
 ARG RELEASE=master
 ARG PYICUB_BRANCH=master
 
+ARG PYICUB_APPS_RELEASE=master
+ARG PYICUB_APPS_BRANCH=master
+
 WORKDIR /home/icub
 
 USER icub
@@ -40,6 +43,12 @@ RUN cd /home/icub && \
     cd pyicub && \
     git checkout ${RELEASE} && \
     pip3 install -r requirements.txt
+
+RUN cd /home/icub && \
+    git clone https://github.com/s4hri/pyicub-apps  -b ${PYICUB_APPS_BRANCH} && \
+    cd pyicub-apps && \
+    git checkout ${PYICUB_APPS_RELEASE}
+
 
 ENV PYTHONPATH $PYTHONPATH:/home/icub/pyicub
 ENV YARP_COLORED_OUTPUT 1
@@ -55,3 +64,5 @@ ENV PYICUB_LOGGING=true
 ENV PYICUB_API=false
 ENV PYICUB_API_BACKEND_HOST=9000
 ENV PYICUB_API_BACKEND_PORT=9001
+
+ENV PYICUB_APPS_PATH=/home/icub/pyicub-apps
