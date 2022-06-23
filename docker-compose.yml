@@ -46,8 +46,6 @@ services:
       - PYICUB_LOGGING=${PYICUB_LOGGING}
       - PYICUB_LOGGING_PATH=${PYICUB_LOGGING_PATH}
       - PYICUB_API=${PYICUB_API}
-      - PYICUB_API_RESTMANAGER_HOST=${PYICUB_API_RESTMANAGER_HOST}
-      - PYICUB_API_RESTMANAGER_PORT=${PYICUB_API_RESTMANAGER_PORT}
       - PYICUB_API_PROXY_HOST=${PYICUB_API_PROXY_HOST}
       - PYICUB_API_PROXY_PORT=${PYICUB_API_PROXY_PORT}
 
@@ -62,9 +60,50 @@ services:
         source: pyicub-home
         target: /home/icub/
 
+  pyicub-backend:
+    image: ${PJT_DOCKER_IMAGE}.local
+    container_name: pyicub-backend.${RELEASE}
+    profiles: ["restapi"]
+
+    extends:
+      file: .dockyman/profiles/local.yml
+      service: local
+
+    environment:
+      - ICUB_SIMULATION=${ICUB_SIMULATION}
+      - ICUB_USER=${ICUB_USER}
+      - ICUB_PSW=${ICUB_PSW}
+      - ICUB_HOST=${ICUB_HOST}
+      - ICUB_IP=${ICUB_IP}
+      - ICUBSRV_HOST=${ICUBSRV_HOST}
+      - ICUBSRV_IP=${ICUBSRV_IP}
+      - ICUB_APPS=${ICUB_APPS}
+      - PYICUB_LOGGING=${PYICUB_LOGGING}
+      - PYICUB_LOGGING_PATH=${PYICUB_LOGGING_PATH}
+      - PYICUB_API=${PYICUB_API}
+      - PYICUB_API_PROXY_HOST=${PYICUB_API_PROXY_HOST}
+      - PYICUB_API_PROXY_PORT=${PYICUB_API_PROXY_PORT}
+
+    command: ["/bin/bash", "-c", "python3 -m pyicub.proc.restserver"]
+
+    volumes:
+      - type: bind
+        source: ./shared
+        target: /home/icub/shared
+
+      - type: volume
+        source: pyicub-home
+        target: /home/icub/
+
   pyicub-frontend:
     image: ${PYICUB_FRONTEND_DOCKER_IMAGE}
     container_name: pyicub-frontend.${RELEASE}
+    profiles: ["restapi"]
+
+    network_mode: host
+
+    depends_on:
+      - pyicub-backend
 
     build:
       context: docker/frontend
@@ -72,7 +111,7 @@ services:
     environment:
       - PORT=${PYICUB_API_FRONTEND_PORT}
       - REACT_APP_API=pyicub
-      - REACT_APP_PROXY=http://${PYICUB_API_BACKEND_HOST}:${PYICUB_API_BACKEND_PORT}
+      - REACT_APP_PROXY=http://${PYICUB_API_PROXY_HOST}:${PYICUB_API_PROXY_PORT}
       - REACT_APP_NAME="appname"
 
     volumes:

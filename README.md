@@ -12,6 +12,16 @@ cd pyicub-lab
 bash go
 ```
 
+Using REST API
+-------------
+
+```
+git clone https://github.com/s4hri/pyicub-lab
+cd pyicub-lab
+bash go --profile restapi
+```
+
+
 Acknowledgments
 -------------
 
