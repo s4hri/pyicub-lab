@@ -114,7 +114,7 @@ services:
       - REACT_APP_API=pyicub
       - REACT_APP_PROXY=http://${PYICUB_API_PROXY_HOST}:${PYICUB_API_PROXY_PORT}
       - REACT_APP_NAME=${REACT_APP_NAME}
-      - REACT_APP_ROBOT_NAME=icubSim
+      - REACT_APP_ICUB_SIMULATION=${ICUB_SIMULATION}
 
     volumes:
       - type: volume
