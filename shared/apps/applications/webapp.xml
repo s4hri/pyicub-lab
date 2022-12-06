@@ -1,0 +1,28 @@
+<application>
+
+    <name>webapp</name>
+
+    <authors>
+        <author email="davide.detommaso@iit.it">Davide De Tommaso</author>
+    </authors>
+
+    <module>
+        <name>python3</name>
+        <parameters>webapp.py</parameters>
+        <workdir>/home/icub/shared/apps/webapp</workdir>
+        <node>$ENV{ICUBSRV_HOST}</node>
+    </module>
+
+    <module>
+        <name>python3</name>
+        <parameters>clickFollower.py</parameters>
+        <workdir>/home/icub/pyicub-apps/icubFollower/src</workdir>
+        <node>$ENV{ICUBSRV_HOST}</node>
+    </module>
+
+    <connection>
+        <from>/$ENV{REACT_APP_NAME}:o</from>
+        <to>/clickFollower:i</to>
+        <protocol>tcp</protocol>
+    </connection>
+</application>

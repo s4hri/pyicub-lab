@@ -48,6 +48,7 @@ services:
       - PYICUB_API=${PYICUB_API}
       - PYICUB_API_PROXY_HOST=${PYICUB_API_PROXY_HOST}
       - PYICUB_API_PROXY_PORT=${PYICUB_API_PROXY_PORT}
+      - REACT_APP_NAME=${REACT_APP_NAME}
 
     command: ["/bin/bash", "-c", "terminator & bash /home/icub/shared/startup.sh"]
 
@@ -112,7 +113,8 @@ services:
       - PORT=${PYICUB_API_FRONTEND_PORT}
       - REACT_APP_API=pyicub
       - REACT_APP_PROXY=http://${PYICUB_API_PROXY_HOST}:${PYICUB_API_PROXY_PORT}
-      - REACT_APP_NAME="appname"
+      - REACT_APP_NAME=${REACT_APP_NAME}
+      - REACT_APP_ROBOT_NAME=icubSim
 
     volumes:
       - type: volume

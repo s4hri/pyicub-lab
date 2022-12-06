@@ -1,0 +1,100 @@
+{
+    "steps": [
+        {
+            "name": "step",
+            "limb_motions": {},
+            "gaze_motion": {
+                "checkpoints": [
+                    [
+                        0.0,
+                        8.0,
+                        3.0
+                    ],
+                    [
+                        -25.0,
+                        8.0,
+                        3.0
+                    ]
+                ],
+                "lookat_method": "lookAtAbsAngles"
+            },
+            "custom_calls": [],
+            "offset_ms": null
+        },
+        {
+            "name": "step",
+            "limb_motions": {
+                "right_arm": {
+                    "part_name": "right_arm",
+                    "checkpoints": [
+                        {
+                            "pose": {
+                                "target_joints": [
+                                    -84.0,
+                                    93.0,
+                                    0.0
+                                ],
+                                "joints_list": [
+                                    0,
+                                    1,
+                                    2
+                                ]
+                            },
+                            "duration": 2.0,
+                            "timeout": 30.0
+                        },
+                        {
+                            "pose": {
+                                "target_joints": [
+                                    -26.9,
+                                    46.4,
+                                    31.35
+                                ],
+                                "joints_list": [
+                                    0,
+                                    1,
+                                    2
+                                ]
+                            },
+                            "duration": 2.0,
+                            "timeout": 30.0
+                        }
+                    ]
+                }
+            },
+            "gaze_motion": null,
+            "custom_calls": [
+                {
+                    "target": "speech.say",
+                    "args": [
+                        "Ciao, io sono aicab. Cominciamo a giocare?"
+                    ]
+                }
+            ],
+            "offset_ms": null
+        },
+        {
+            "name": "step",
+            "limb_motions": {},
+            "gaze_motion": {
+                "checkpoints": [
+                    [
+                        0.0,
+                        8.0,
+                        3.0
+                    ],
+                    [
+                        -25.0,
+                        8.0,
+                        3.0
+                    ]
+                ],
+                "lookat_method": "lookAtAbsAngles"
+            },
+            "custom_calls": [],
+            "offset_ms": null
+        }
+    ],
+    "name": "action",
+    "description": "empty"
+}

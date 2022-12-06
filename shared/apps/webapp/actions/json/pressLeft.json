@@ -1,0 +1,43 @@
+{
+    "steps": [
+        {
+            "name": "step",
+            "limb_motions": {
+                "left_arm": {
+                    "part_name": "left_arm",
+                    "checkpoints": [
+                        {
+                            "pose": {
+                                "target_joints": [
+                                    5.0
+                                ],
+                                "joints_list": [
+                                    5
+                                ]
+                            },
+                            "duration": 0.2,
+                            "timeout": 0.2
+                        },
+                        {
+                            "pose": {
+                                "target_joints": [
+                                    -6.64
+                                ],
+                                "joints_list": [
+                                    5
+                                ]
+                            },
+                            "duration": 0.2,
+                            "timeout": 0.2
+                        }
+                    ]
+                }
+            },
+            "gaze_motion": null,
+            "custom_calls": [],
+            "offset_ms": null
+        }
+    ],
+    "name": "action",
+    "description": "empty"
+}
