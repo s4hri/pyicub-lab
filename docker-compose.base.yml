@@ -34,3 +34,11 @@ services:
       args:
         DOCKER_SRC: ${DOCKER_SRC}
         RELEASE: ${RELEASE}
+
+  pyicub-frontend.base:
+    image: ${PYICUB_FRONTEND_DOCKER_IMAGE}
+
+    build:
+      context: docker/frontend
+      args:
+        RELEASE: ${RELEASE}

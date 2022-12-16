@@ -24,6 +24,8 @@
 
 FROM node:16
 
+ARG RELEASE=master
+
 RUN mkdir /app
 WORKDIR /app
 
