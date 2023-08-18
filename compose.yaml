@@ -1,0 +1,67 @@
+services:
+
+  pyicub:
+    image: ${PYICUB_BASE_NAME:?err}.local
+    container_name: pyicub.${VERSION}
+
+    extends:
+      file: .dockyman/profiles/local.yaml
+      service: local
+
+    env_file:
+      - .env
+      - pyicub.env
+
+    command: ["/bin/bash", "-c", "terminator & bash /var/dockyman/scripts/initContainer.sh"]
+    
+    volumes:
+      - type: bind
+        source: ./scripts
+        target: /var/dockyman/scripts
+
+      - type: bind
+        source: ./workdir
+        target: /workdir
+
+      - type: volume
+        source: pyicub-workspace
+        target: /home/icub/pyicub
+
+  pyicub.backend:
+    container_name: pyicub-backend.${VERSION}
+
+    profiles: ["restapi"]
+
+    extends: pyicub
+
+    depends_on:
+      - pyicub
+
+    command: ["/bin/bash", "-c", "python3 -m pyicub.proc.restserver"]
+
+
+  pyicub-frontend:
+    image: ${PYICUB_FRONTEND_BASE_NAME}
+    container_name: pyicub-frontend.${VERSION}
+
+    profiles: ["restapi"]
+  
+    env_file:
+      - .env
+      - pyicub.env
+
+    links:
+      - pyicub.backend
+
+    depends_on:
+      - pyicub
+      - pyicub.backend
+
+    volumes:
+      - type: volume
+        source: pyicub-frontend-workspace
+        target: /app/pyicub-frontend
+  
+volumes:
+  pyicub-workspace:
+  pyicub-frontend-workspace:

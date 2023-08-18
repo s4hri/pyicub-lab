@@ -1,4 +1,6 @@
 #!/bin/bash
-echo ">> Executing script GO ..."
 
-bash .dockyman/run.sh $@
+source build.env
+make -C .dockyman run  
+
+

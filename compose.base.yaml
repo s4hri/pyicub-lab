@@ -1,8 +1,8 @@
 # MIT License
 #
-# Copyright (c) 2022 Social Cognition in Human-Robot Interaction
+# Copyright (c) 2023 Istituto Italiano di Tecnologia (IIT)
 #                    Author: Davide De Tommaso (davide.detommaso@iit.it)
-#                    Project: Dockyman Template
+#                    Project: Dockyman
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,19 +22,40 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#!/bin/bash
 
-CURRENT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-export XP_SCRIPT_DIR=${CURRENT_DIR}
-export XP_TARGET_DIR=${CURRENT_DIR}/..
+services:
+  
+  pyicub.base:
 
-source ${XP_SCRIPT_DIR}/setup.sh
+    extends:
+      file: .dockyman/services/dockyman.yaml
+      service: dockyman
 
-if [[ $(lsmod | grep nvidia) ]]; then
-  export LOCAL_PROFILE=${XP_TARGET_DIR}/.dockyman/profiles/nvidia.yml
-else
-  export LOCAL_PROFILE=${XP_TARGET_DIR}/.dockyman/profiles/common.yml
-fi
+    environment:
+      - DOCKER_SRC=${PYICUB_BASE_DOCKER_SRC}
+      - PYICUB_VERSION=${VERSION}
+    
+    command: --image_name ${PYICUB_BASE_NAME:?err} --workspace_folder ./base/pyicub
 
-docker-compose -f ${XP_TARGET_DIR}/docker-compose.yml $@ up
-docker-compose -f ${XP_TARGET_DIR}/docker-compose.yml $@ down --remove-orphans
+    volumes:
+      - type: bind
+        source: ./
+        target: /shared
+
+
+  pyicub_frontend.base:
+
+    extends:
+      file: .dockyman/services/dockyman.yaml
+      service: dockyman
+
+    environment:
+      - DOCKER_SRC=${PYICUB_BASE_DOCKER_SRC}
+      - PYICUB_FRONTEND_VERSION=${VERSION}
+    
+    command: --image_name ${PYICUB_FRONTEND_BASE_NAME:?err} --workspace_folder ./base/pyicub-frontend
+
+    volumes:
+      - type: bind
+        source: ./
+        target: /shared

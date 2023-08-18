@@ -1,0 +1,8 @@
+{
+  "dockerComposeFile": ["compose.yaml"],
+  "service": "pyicub",
+  "workspaceFolder": "/home/icub/pyicub",
+  "initializeCommand": ". ./build.env && make -C .dockyman",
+  "overrideCommand": false,
+  "shutdownAction": "stopCompose"
+}

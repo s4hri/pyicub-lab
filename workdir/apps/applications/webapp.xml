@@ -9,7 +9,7 @@
     <module>
         <name>python3</name>
         <parameters>webapp.py</parameters>
-        <workdir>/home/icub/shared/apps/webapp</workdir>
+        <workdir>$ENV{ICUB_APPS}/webapp</workdir>
         <node>$ENV{ICUBSRV_HOST}</node>
     </module>
 

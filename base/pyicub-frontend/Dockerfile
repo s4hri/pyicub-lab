@@ -1,8 +1,8 @@
 # MIT License
 #
-# Copyright (c) 2022 Social Cognition in Human-Robot Interaction
-#                    Author: Davide De Tommaso (davide.detommaso@iit.it)
-#                    Project: Dockyman Template
+# Copyright (c) 2023 Social Cognition in Human-Robot Interaction
+#                    Author: Nicola Severino Russi (nicola.russi@iit.it)
+#                            Davide De Tommaso (davide.detommaso@iit.it)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,38 +22,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-version: '3.8'
+FROM node:16
 
-services:
+ARG PYICUB_FRONTEND_VERSION=master
 
-  local:
+RUN mkdir /app
+WORKDIR /app
 
-    environment:
-        - DISPLAY=${DISPLAY}
-        - QT_X11_NO_MITSHM=1
-        - PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native
-        - PULSE_COOKIE=/run/pulse/cookie
-        - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
-        - XDG_DATA_DIRS=${XDG_DATA_DIRS}
+# Create react app
+RUN npx create-react-app pyicub-frontend
 
-    privileged: true
-    stdin_open: true
-    tty: true
-    network_mode: host
+# Define work directory
+WORKDIR /app/pyicub-frontend
 
-    volumes:
-      - type: bind
-        source: /tmp/.X11-unix
-        target: /tmp/.X11-unix
+RUN npm ci
+RUN npm install @mui/material @emotion/react @emotion/styled
+RUN npm install bootstrap@3
+RUN npm install react-iframe
+RUN npm install react-router-dom@6
+RUN npm i react-icons
+RUN npm install http-proxy-middleware --save
 
-      - type: bind
-        source: ${HOME}/.config/pulse/cookie
-        target: /run/pulse/cookie
+RUN mkdir -p /root/.vscode-server /root/.vscode-server-insiders
+RUN git clone https://github.com/s4hri/pyicub-frontend -b master tmp
+RUN cd tmp && git checkout ${PYICUB_FRONTEND_VERSION}
+RUN cp -a tmp/. /app/pyicub-frontend/
+RUN rm -rf tmp
 
-      - type: bind
-        source: ${XDG_RUNTIME_DIR}/pulse
-        target: ${XDG_RUNTIME_DIR}/pulse
-
-      - type: bind
-        source: ${XDG_RUNTIME_DIR}/dconf
-        target: ${XDG_RUNTIME_DIR}/dconf
+CMD ["npm", "start"]

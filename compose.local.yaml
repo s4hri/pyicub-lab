@@ -1,8 +1,8 @@
 # MIT License
 #
-# Copyright (c) 2022 Social Cognition in Human-Robot Interaction
+# Copyright (c) 2023 Istituto Italiano di Tecnologia (IIT)
 #                    Author: Davide De Tommaso (davide.detommaso@iit.it)
-#                    Project: Dockyman Template
+#                    Project: Dockyman
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-version: '3.8'
 
 services:
-
-  local:
+  
+  pyicub.local:
 
     extends:
-      file: ${LOCAL_PROFILE}
-      service: local
+      file: .dockyman/services/dockyman.yaml
+      service: dockyman
 
-    environment:
-        - DBUS_SESSION_BUS_ADDRESS=${DBUS_SESSION_BUS_ADDRESS}
-
-    volumes:
-      - type: bind
-        source: /run/dbus/system_bus_socket
-        target: /run/dbus/system_bus_socket
-
-      - type: bind
-        source: ${XDG_RUNTIME_DIR}/bus
-        target: ${XDG_RUNTIME_DIR}/bus
+    command: --image_name ${PYICUB_BASE_NAME:?err} --username icub --groups "sudo,audio,video,input,dialout"

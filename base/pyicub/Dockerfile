@@ -2,7 +2,6 @@
 #
 # Copyright (c) 2022 Social Cognition in Human-Robot Interaction
 #                    Author: Davide De Tommaso (davide.detommaso@iit.it)
-#                    Project: Dockyman template
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +21,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-version: '3.8'
+ARG DOCKER_SRC
+FROM $DOCKER_SRC
 
-services:
+LABEL maintainer="Davide De Tommaso <davide.detommaso@iit.it>"
 
-  pyicub.base:
-    image: ${PJT_DOCKER_IMAGE}
+ARG PYICUB_VERSION=master
+ARG PYICUB_BRANCH=master
 
-    build:
-      context: docker
-      args:
-        DOCKER_SRC: ${DOCKER_SRC}
-        RELEASE: ${RELEASE}
+ARG PYICUB_APPS_VERSION=master
+ARG PYICUB_APPS_BRANCH=master
 
-  pyicub-frontend.base:
-    image: ${PYICUB_FRONTEND_DOCKER_IMAGE}
+WORKDIR /home/icub
 
-    build:
-      context: docker/frontend
-      args:
-        RELEASE: ${RELEASE}
+USER icub
+
+ENV PATH=$PATH:/home/icub/.local/bin
+
+RUN cd /home/icub && \
+    git clone https://github.com/s4hri/pyicub -b ${PYICUB_BRANCH} && \
+    cd pyicub && \
+    git checkout ${PYICUB_VERSION} && \
+    pip3 install -r requirements.txt
+
+RUN cd /home/icub && \
+    git clone https://github.com/s4hri/pyicub-apps  -b ${PYICUB_APPS_BRANCH} && \
+    cd pyicub-apps && \
+    git checkout ${PYICUB_APPS_VERSION}
+
+ENV PYTHONPATH $PYTHONPATH:/home/icub/pyicub

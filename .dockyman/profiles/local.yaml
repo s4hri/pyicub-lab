@@ -1,7 +1,8 @@
 # MIT License
 #
-# Copyright (c) 2022 Social Cognition in Human-Robot Interaction
+# Copyright (c) 2023 Istituto Italiano di Tecnologia (IIT)
 #                    Author: Davide De Tommaso (davide.detommaso@iit.it)
+#                    Project: Dockyman
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,48 +22,42 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-ARG DOCKER_SRC
-FROM $DOCKER_SRC
+services:
 
-LABEL maintainer="Davide De Tommaso <davide.detommaso@iit.it>"
+  local:
+    environment:
+        - DISPLAY=${DISPLAY:?err}
+        - QT_X11_NO_MITSHM=1
+        - PULSE_SERVER=unix:${XDG_RUNTIME_DIR:?err}/pulse/native
+        - PULSE_COOKIE=/run/pulse/cookie
+        - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:?err}
+        - XDG_DATA_DIRS=${XDG_DATA_DIRS:?err}
 
-ARG RELEASE=master
-ARG PYICUB_BRANCH=master
+    extends:
+      file: gpus.yaml
+      service: ${GPU_PROFILE:?err}
 
-ARG PYICUB_APPS_RELEASE=master
-ARG PYICUB_APPS_BRANCH=master
+    working_dir: /workdir
 
-WORKDIR /home/icub
+    privileged: true
+    stdin_open: true
+    tty: true
+    network_mode: host
 
-USER icub
+    volumes:
+      - type: bind
+        source: /tmp/.X11-unix
+        target: /tmp/.X11-unix
 
-ENV PATH=$PATH:/home/icub/.local/bin
+      - type: bind
+        source: ${HOME}/.config/pulse/cookie
+        target: /run/pulse/cookie
 
-RUN cd /home/icub && \
-    git clone https://github.com/s4hri/pyicub -b ${PYICUB_BRANCH} && \
-    cd pyicub && \
-    git checkout ${RELEASE} && \
-    pip3 install -r requirements.txt
+      - type: bind
+        source: ${XDG_RUNTIME_DIR:?err}/pulse
+        target: ${XDG_RUNTIME_DIR:?err}/pulse
 
-RUN cd /home/icub && \
-    git clone https://github.com/s4hri/pyicub-apps  -b ${PYICUB_APPS_BRANCH} && \
-    cd pyicub-apps && \
-    git checkout ${PYICUB_APPS_RELEASE}
+      - type: bind
+        source: ${XDG_RUNTIME_DIR:?err}/dconf
+        target: ${XDG_RUNTIME_DIR:?err}/dconf
 
-
-ENV PYTHONPATH $PYTHONPATH:/home/icub/pyicub
-ENV YARP_COLORED_OUTPUT 1
-ENV ICUB_SIMULATION true
-ENV ICUB_USER icub
-ENV ICUB_PSW icub
-ENV ICUB_HOST icub-head
-ENV ICUB_IP 10.0.0.2
-ENV ICUBSRV_HOST=icubsrv
-ENV ICUBSRV_IP=10.0.0.1
-ENV ICUB_APPS=/usr/local/src/robot/applications
-ENV PYICUB_LOGGING=true
-ENV PYICUB_API=false
-ENV PYICUB_API_BACKEND_HOST=9000
-ENV PYICUB_API_BACKEND_PORT=9001
-
-ENV PYICUB_APPS_PATH=/home/icub/pyicub-apps
