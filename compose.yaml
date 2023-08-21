@@ -27,19 +27,6 @@ services:
         source: pyicub-workspace
         target: /home/icub/pyicub
 
-  pyicub.backend:
-    container_name: pyicub-backend.${VERSION}
-
-    profiles: ["restapi"]
-
-    extends: pyicub
-
-    depends_on:
-      - pyicub
-
-    command: ["/bin/bash", "-c", "python3 -m pyicub.proc.restserver"]
-
-
   pyicub-frontend:
     image: ${PYICUB_FRONTEND_BASE_NAME}
     container_name: pyicub-frontend.${VERSION}
@@ -50,12 +37,10 @@ services:
       - .env
       - pyicub.env
 
-    links:
-      - pyicub.backend
+    network_mode: host
 
     depends_on:
       - pyicub
-      - pyicub.backend
 
     volumes:
       - type: volume

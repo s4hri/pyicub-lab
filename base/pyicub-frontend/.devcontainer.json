@@ -3,7 +3,7 @@
 	{ 
 			"dockerfile": "Dockerfile",
 			"args": { "DOCKER_SRC": "${localEnv:DOCKER_SRC}",
-					  "PYICUB_FRONTEND_VERSION": "${localEnv:VERSION}" }
+					  "PYICUB_FRONTEND_VERSION": "${localEnv:PYICUB_FRONTEND_VERSION}" }
 	}
   
 }

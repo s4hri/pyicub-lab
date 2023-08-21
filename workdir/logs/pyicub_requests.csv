@@ -1,4 +1,0 @@
-req_id,target,tag,status,creation_time,start_time,end_time,duration,exception,retval
-http://0.0.0.0:9002/pyicub/icubSim/pywebapp/SetIntros/1,SetIntros,SetIntros/1,INIT,6033.8854,,,,,
-http://0.0.0.0:9002/pyicub/icubSim/pywebapp/SetIntros/1,SetIntros,SetIntros/1,DONE,6033.8854,6033.8938,6033.9188,0.025,,
-http://0.0.0.0:9002/pyicub/icubSim/pywebapp/SetIntros/1,SetIntros,SetIntros/1,DONE,6033.8854,6033.8938,6033.9188,0.025,,True
