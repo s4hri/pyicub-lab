@@ -4,5 +4,10 @@
   "workspaceFolder": "/home/icub/pyicub",
   "initializeCommand": ". ./build.env && make -C .dockyman",
   "overrideCommand": false,
-  "shutdownAction": "stopCompose"
+  "shutdownAction": "stopCompose",
+  "mounts": [
+    "source=${localEnv:HOME}/.config/Code,target=/home/icub/.config/Code,type=bind,consistency=ro",
+    "source=${localEnv:HOME}/.config/git,target=/home/icub/.config/git,type=bind,consistency=ro"
+  ]
+
 }
