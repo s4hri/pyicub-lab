@@ -33,7 +33,7 @@ services:
 
     environment:
       - DOCKER_SRC=${PYICUB_BASE_DOCKER_SRC}
-      - PYICUB_VERSION=${VERSION}
+      - PYICUB_VERSION=${PYICUB_VERSION}
     
     command: --image_name ${PYICUB_BASE_NAME:?err} --workspace_folder ./base/pyicub
 
@@ -51,7 +51,7 @@ services:
 
     environment:
       - DOCKER_SRC=${PYICUB_BASE_DOCKER_SRC}
-      - PYICUB_FRONTEND_VERSION=${VERSION}
+      - PYICUB_FRONTEND_VERSION=${PYICUB_FRONTEND_VERSION}
     
     command: --image_name ${PYICUB_FRONTEND_BASE_NAME:?err} --workspace_folder ./base/pyicub-frontend
 
