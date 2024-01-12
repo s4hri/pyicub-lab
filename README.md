@@ -1,6 +1,16 @@
 ![PYICUB logo](media/pyicublab-logo.png?raw=true)
 ====
 
+Requirements
+------------
+
+- make
+- docker
+
+```
+sudo apt-get install build-essential
+```
+
 Introduction
 ------------
 
