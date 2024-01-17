@@ -39,12 +39,7 @@
 
           <module>
             <name>yarpview</name>
-            <parameters>--name /face --x 0 --y 0 --p 50 --w 320 --h 240</parameters>
-            <node>$ENV{ICUBSRV_HOST}</node>
-          </module>
-
-          <module>
-            <name>faceLandmarks</name>
+            <parameters>--name /rightcamview --x 0 --y 0 --p 50 --w 320 --h 240</parameters>
             <node>$ENV{ICUBSRV_HOST}</node>
           </module>
 
@@ -92,14 +87,8 @@
           </connection>
 
           <connection>
-            <from>/faceLandmarks/image:o</from>
-            <to>/face</to>
-            <protocol>udp</protocol>
-          </connection>
-
-          <connection>
-            <output>/icub/camcalib/right/out</output>
-            <input>/faceLandmarks/image:i</input>
+            <from>/icub/camcalib/right/out</from>
+            <to>/rightcamview</to>
             <protocol>udp</protocol>
           </connection>
 

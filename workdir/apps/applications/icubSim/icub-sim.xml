@@ -1,5 +1,5 @@
 <application>
-<name>iCub Simulation</name>
+<name>iCubSim</name>
 
         <module>
                 <name>yarplogger</name>
@@ -47,23 +47,11 @@
             <node>$ENV{ICUBSRV_HOST}</node>
         </module>
 
-        <module>
-                  <name>yarpdev</name>
-                  <environment>YARP_FORWARD_LOG_ENABLE=1</environment>
-                  <parameters>--device opencv_grabber</parameters>
-                  <node>$ENV{ICUBSRV_HOST}</node>
-        </module>
-
-        <module>
-          <name>yarpview</name>
-          <parameters>--name /face --x 0 --y 0 --p 50 --w 320 --h 240</parameters>
-          <node>$ENV{ICUBSRV_HOST}</node>
-        </module>
-
-        <module>
-           <name>faceLandmarks</name>
-           <node>$ENV{ICUBSRV_HOST}</node>
-         </module>
+          <module>
+            <name>yarpview</name>
+            <parameters>--name /rightcamview --x 0 --y 0 --p 50 --w 320 --h 240</parameters>
+            <node>$ENV{ICUBSRV_HOST}</node>
+          </module>
 
         <connection>
             <from>/face/eyelids</from>
@@ -96,14 +84,8 @@
         </connection>
 
         <connection>
-            <from>/faceLandmarks/image:o</from>
-            <to>/face</to>
-            <protocol>udp</protocol>
-        </connection>
-
-        <connection>
-            <output>/grabber</output>
-            <input>/faceLandmarks/image:i</input>
+            <from>/icubSim/cam/right</from>
+            <to>/rightcamview</to>
             <protocol>udp</protocol>
         </connection>
 

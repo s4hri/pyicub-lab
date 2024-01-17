@@ -31,7 +31,7 @@ services:
 
   pyicub-frontend:
     image: ${PYICUB_FRONTEND_BASE_NAME}
-    container_name: pyicub-frontend.${VERSION}
+    container_name: pyicub-frontend.${PYICUB_FRONTEND_VERSION}
 
     profiles: ["restapi"]
   

@@ -4,7 +4,7 @@ echo "DOCKYMAN -> Running inizialization script (docker container)"
 
 source ${ROBOTOLOGY_SUPERBUILD_INSTALL_DIR}/share/robotology-superbuild/setup.sh
 
-YARP_FORWARD_LOG_ENABLE=0 yarpserver --write --ip $ICUBSRV_IP &
+YARP_FORWARD_LOG_ENABLE=0 yarpserver --write --ip $ICUBSRV_IP --socket $ICUBSRV_PORT &
 sleep 1
 
 if ! $ICUB_SIMULATION ; then
