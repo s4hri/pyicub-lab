@@ -12,6 +12,7 @@ services:
 
     env_file:
       - .env
+      - icub.env
       - pyicub.env
 
     command: ["/bin/bash", "-c", "terminator & bash /var/dockyman/scripts/initContainer.sh"]

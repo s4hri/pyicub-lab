@@ -32,6 +32,7 @@ RUN git clone https://github.com/s4hri/pyicub-frontend -b master tmp
 RUN cd tmp && git checkout ${PYICUB_FRONTEND_VERSION}
 RUN cp -a tmp/. /app/pyicub-frontend/
 RUN rm -rf tmp
+
 # Define work directory
 WORKDIR /app/pyicub-frontend
 RUN npm install
