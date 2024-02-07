@@ -1,0 +1,8 @@
+{
+	"build": 
+	{ 
+			"dockerfile": "Dockerfile",
+			"args": { "DOCKER_SRC": "${localEnv:DOCKER_SRC}" }
+	}
+  
+}

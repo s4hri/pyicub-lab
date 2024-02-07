@@ -33,27 +33,9 @@ services:
       service: dockyman
 
     environment:
-      - DOCKER_SRC=${PYICUB_BASE_DOCKER_SRC}
-      - PYICUB_VERSION=${PYICUB_VERSION}
-    
-    command: --image_name ${PYICUB_BASE_NAME:?err} --workspace_folder ./base/pyicub
+      - DOCKER_SRC=${PYICUB_BASE_NAME}
 
-    volumes:
-      - type: bind
-        source: ./
-        target: /shared
-
-
-  pyicub_frontend.base:
-
-    extends:
-      file: .dockyman/services/dockyman.yaml
-      service: dockyman
-
-    environment:
-      - PYICUB_FRONTEND_VERSION=${PYICUB_FRONTEND_VERSION}
-    
-    command: --image_name ${PYICUB_FRONTEND_BASE_NAME:?err} --workspace_folder ./base/pyicub-frontend
+    command: --image_name ${PYICUB_BASE_NAME:?err} --workspace_folder ./base/image
 
     volumes:
       - type: bind

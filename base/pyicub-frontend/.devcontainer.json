@@ -1,8 +1,0 @@
-{
-	"build": 
-	{ 
-			"dockerfile": "Dockerfile",
-			"args": { "PYICUB_FRONTEND_VERSION": "${localEnv:PYICUB_FRONTEND_VERSION}" }
-	}
-  
-}

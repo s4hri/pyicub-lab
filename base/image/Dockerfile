@@ -25,30 +25,3 @@ ARG DOCKER_SRC
 FROM $DOCKER_SRC
 
 LABEL maintainer="Davide De Tommaso <davide.detommaso@iit.it>"
-
-ARG PYICUB_URL=https://github.com/s4hri/pyicub
-ARG PYICUB_BRANCH=master
-ARG PYICUB_VERSION=master
-
-ARG PYICUB_APPS_URL=https://github.com/s4hri/pyicub-apps
-ARG PYICUB_APPS_BRANCH=master
-ARG PYICUB_APPS_VERSION=master
-
-WORKDIR /home/icub
-
-USER icub
-
-ENV PATH=$PATH:/home/icub/.local/bin
-
-RUN cd /home/icub && \
-    git clone ${PYICUB_URL} -b ${PYICUB_BRANCH} && \
-    cd pyicub && \
-    git checkout ${PYICUB_VERSION} && \
-    pip3 install -r requirements.txt
-
-RUN cd /home/icub && \
-    git clone ${PYICUB_APPS_URL} -b ${PYICUB_APPS_BRANCH} && \
-    cd pyicub-apps && \
-    git checkout ${PYICUB_APPS_VERSION}
-
-ENV PYTHONPATH $PYTHONPATH:/home/icub/pyicub
