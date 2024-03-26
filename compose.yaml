@@ -30,6 +30,7 @@ services:
         source: pyicub-workspace
         target: /home/icub/pyicub
 
+
   pyicub-frontend:
     image: ${PYICUB_FRONTEND_BASE_NAME}
     container_name: pyicub-frontend.${PYICUB_FRONTEND_VERSION}
@@ -49,7 +50,7 @@ services:
       - type: volume
         source: pyicub-frontend-workspace
         target: /app/pyicub-frontend
-  
+
 volumes:
   pyicub-workspace:
   pyicub-frontend-workspace:
