@@ -4,18 +4,33 @@ echo "DOCKYMAN -> Running inizialization script (docker container)"
 
 source ${ROBOTOLOGY_SUPERBUILD_INSTALL_DIR}/share/robotology-superbuild/setup.sh
 
-YARP_FORWARD_LOG_ENABLE=0 yarpserver --write --ip $ICUBSRV_IP --socket $ICUBSRV_PORT &
-sleep 1
+python3 /home/icub/pyicub/pyicub/proc/actionizer.py build --module apps.robot.actions --target /workdir/apps/robot/actions
+python3 /home/icub/pyicub/pyicub/proc/fsmizer.py build --module apps.robot.fsm --target /workdir/apps/robot/fsms
 
-if ! $ICUB_SIMULATION ; then
-  sshpass -p $ICUB_PSW ssh -o StrictHostKeyChecking=no $ICUB_USER@$ICUB_IP "yarprun --server /"$ICUB_HOST" --log &" &
+ICUB_HOSTS_ENTRY="$ICUB_IP icub-head"
+
+# Check if the entry already exists
+if grep -Fxq "$ICUB_HOSTS_ENTRY" /etc/hosts
+then
+    echo "iCub entry already exists in /etc/hosts"
+else
+    # Add the entry to /etc/hosts
+    echo "$ICUB_HOSTS_ENTRY" | sudo tee -a /etc/hosts > /dev/null
+    echo "iCub entry added to /etc/hosts"
 fi
 
-yarprun --server /$ICUBSRV_HOST --log &
+YARP_FORWARD_LOG_ENABLE=0 yarpserver --write &
+sleep 2
+
+if ! $ICUB_SIMULATION ; then
+  sshpass -p icub ssh -o StrictHostKeyChecking=no icub@$ICUB_IP "yarprun --server /"$ICUB_NODE" --log &" &
+fi
+
+yarprun --server /$ICUBSRV_NODE --log &
 
 yarpmanager --apppath ${ICUB_APPS}/applications --from ${ICUB_APPS}/applications/cluster-config.xml
 
 if ! $ICUB_SIMULATION ; then
-  sshpass -p $ICUB_PSW ssh -o StrictHostKeyChecking=no $ICUB_USER@$ICUB_IP "killall -9 yarprun"
-  sshpass -p $ICUB_PSW ssh -o StrictHostKeyChecking=no $ICUB_USER@$ICUB_IP "killall -9 yarpdev"
+  sshpass -p icub ssh -o StrictHostKeyChecking=no icub@$ICUB_IP "killall -9 yarprun"
+  sshpass -p icub ssh -o StrictHostKeyChecking=no icub@$ICUB_IP "killall -9 yarpdev"
 fi
