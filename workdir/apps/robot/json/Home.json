@@ -1,0 +1,73 @@
+{
+    "steps": [
+        {
+            "name": "Head_Home",
+            "limb_motions": {
+                "HEAD": {
+                    "part": {
+                        "name": "HEAD",
+                        "robot_part": "head",
+                        "joints_nr": 6,
+                        "joints_list": [
+                            0,
+                            1,
+                            2,
+                            3,
+                            4,
+                            5
+                        ],
+                        "joints_speed": [
+                            10,
+                            10,
+                            20,
+                            20,
+                            20,
+                            20
+                        ]
+                    },
+                    "checkpoints": [
+                        {
+                            "pose": {
+                                "target_joints": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ],
+                                "joints_list": [
+                                    0,
+                                    1,
+                                    2,
+                                    3,
+                                    4,
+                                    5
+                                ]
+                            },
+                            "duration": 2.0,
+                            "timeout": 30.0,
+                            "joints_speed": [
+                                10,
+                                10,
+                                20,
+                                20,
+                                20,
+                                20
+                            ]
+                        }
+                    ]
+                }
+            },
+            "gaze_motion": null,
+            "custom_calls": [],
+            "offset_ms": null
+        }
+    ],
+    "wait_for_steps": [
+        true
+    ],
+    "name": "Home",
+    "description": "empty",
+    "offset_ms": null
+}

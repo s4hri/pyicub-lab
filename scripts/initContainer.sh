@@ -4,8 +4,7 @@ echo "DOCKYMAN -> Running inizialization script (docker container)"
 
 source ${ROBOTOLOGY_SUPERBUILD_INSTALL_DIR}/share/robotology-superbuild/setup.sh
 
-python3 /home/icub/pyicub/pyicub/proc/actionizer.py build --module apps.robot.actions --target /workdir/apps/robot/actions
-python3 /home/icub/pyicub/pyicub/proc/fsmizer.py build --module apps.robot.fsm --target /workdir/apps/robot/fsms
+python3 /home/icub/pyicub/pyicub/proc/actionizer.py build --module apps.robot.actions --target /workdir/apps/robot/json
 
 ICUB_HOSTS_ENTRY="$ICUB_IP icub-head"
 
