@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2022 Social Cognition in Human-Robot Interaction
+# Copyright (c) 2025 Social Cognition in Human-Robot Interaction
 #                    Author: Davide De Tommaso (davide.detommaso@iit.it)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-ARG DOCKER_SRC
+ARG DOCKER_SRC=ubuntu:latest
 FROM $DOCKER_SRC
 
 LABEL maintainer="Davide De Tommaso <davide.detommaso@iit.it>"
