@@ -48,6 +48,10 @@ services:
         source: ./workdir
         target: /workdir
 
+      - type: volume
+        source: pyicub-workspace
+        target: /home/icub/pyicub
+        
   pyicub-frontend:
     image: ${PYICUB_FRONTEND_BASE_NAME}
     container_name: pyicub-frontend.${PYICUB_FRONTEND_VERSION}
@@ -62,6 +66,10 @@ services:
     depends_on:
       - pyicub
 
+    volumes:
+      - type: volume
+        source: pyicub-frontend-workspace
+        target: /app/pyicub-frontend
   
   pyicub-test:
 
@@ -82,3 +90,9 @@ services:
         target: /var/dockyman/scripts
 
     command: ["/bin/bash", "-c", "bash /var/dockyman/scripts/runTests.sh"]
+
+
+
+volumes:
+  pyicub-workspace:
+  pyicub-frontend-workspace:
