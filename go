@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source build.env
+source dockyman.env
 make -C .dockyman run  
 
 
