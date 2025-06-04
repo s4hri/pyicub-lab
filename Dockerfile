@@ -1,8 +1,7 @@
 # MIT License
 #
-# Copyright (c) 2025 Istituto Italiano di Tecnologia (IIT)
+# Copyright (c) 2025 Social Cognition in Human-Robot Interaction
 #                    Author: Davide De Tommaso (davide.detommaso@iit.it)
-#                    Project: Dockyman
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-services:
+ARG DOCKER_SRC=ubuntu:latest
+FROM $DOCKER_SRC
 
-  dockyman:
-    image: iitschri/dockyman:${DOCKYMAN_VER}
-
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /etc/group:/etc/group:ro
-
-    entrypoint: /bin/bash dockyman --action ${ACTION:-noaction} --uid ${USER_UID} --gid ${USER_GID} --dockerhubusername ${DOCKERHUBUSERNAME:-nousr} --dockerhubpassword ${DOCKERHUBPASSWORD:-nopsw}
-
-  devcontainer:
-    extends: dockyman
-
-    entrypoint: devcontainer
+LABEL maintainer="Davide De Tommaso <davide.detommaso@iit.it>"

@@ -6,10 +6,6 @@ __pycache__/
 # C extensions
 *.so
 
-# Dockyman logfile 
-lastrun.log
-.env
-
 # Distribution / packaging
 .Python
 build/
