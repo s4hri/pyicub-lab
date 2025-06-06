@@ -24,4 +24,57 @@
 ARG DOCKER_SRC=ubuntu:latest
 FROM $DOCKER_SRC
 
-LABEL maintainer="Davide De Tommaso <davide.detommaso@iit.it>"
+ARG LOCAL_USER_UID=1000
+ARG LOCAL_USER_GID=1000
+ARG LOCAL_USER_NAME=icub
+ARG ROBOT_CODE="/usr/local/src/robot"
+
+ENV ROBOT_CODE=$ROBOT_CODE
+
+USER root
+
+# Install custom dependencies
+# RUN apt-get update && \
+#     apt-get install -y --no-install-recommends \
+#     sudo \
+#     rm -rf /var/lib/apt/lists/*
+
+
+# Create group with specified GID
+RUN if getent group "$LOCAL_USER_NAME" >/dev/null 2>&1; then \
+        CURRENT_GID=$(getent group "$LOCAL_USER_NAME" | cut -d: -f3); \
+        if [ "$CURRENT_GID" -ne "$LOCAL_USER_GID" ]; then \
+            echo "Updating GID of $LOCAL_USER_NAME from $CURRENT_GID to $LOCAL_USER_GID"; \
+            groupmod -g "$LOCAL_USER_GID" "$LOCAL_USER_NAME"; \
+        fi; \
+    else \
+        echo "Creating group $LOCAL_USER_NAME with GID $LOCAL_USER_GID"; \
+        groupadd -g "$LOCAL_USER_GID" "$LOCAL_USER_NAME"; \
+    fi
+
+# Create user with UID and assign to the correct GID
+RUN if id "$LOCAL_USER_NAME" >/dev/null 2>&1; then \
+        CURRENT_UID=$(id -u "$LOCAL_USER_NAME"); \
+        if [ "$CURRENT_UID" -ne "$LOCAL_USER_UID" ]; then \
+            echo "Updating UID of $LOCAL_USER_NAME from $CURRENT_UID to $LOCAL_USER_UID"; \
+            usermod -u "$LOCAL_USER_UID" -g "$LOCAL_USER_GID" "$LOCAL_USER_NAME"; \
+        fi; \
+    else \
+        echo "Creating user $LOCAL_USER_NAME with UID $LOCAL_USER_UID and GID $LOCAL_USER_GID"; \
+        useradd -m -s /bin/bash -u "$LOCAL_USER_UID" -g "$LOCAL_USER_GID" "$LOCAL_USER_NAME"; \
+    fi && \
+    gpasswd -a "$LOCAL_USER_NAME" sudo && \
+    gpasswd -a "$LOCAL_USER_NAME" audio && \
+    echo "$LOCAL_USER_NAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+
+ENV PATH=$PATH:/home/${LOCAL_USER_NAME}/.local/bin
+
+RUN echo "Fixing permissions for /home/$LOCAL_USER_NAME"; \
+    chown -R "$LOCAL_USER_UID:$LOCAL_USER_GID" "/home/$LOCAL_USER_NAME" && \
+    chown -R "$LOCAL_USER_UID:$LOCAL_USER_GID" "$ROBOT_CODE"
+
+USER $LOCAL_USER_NAME
+
+CMD ["bash"]
+

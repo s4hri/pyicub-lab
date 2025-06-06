@@ -1,5 +1,5 @@
 <application>
-    <name>iCub Simulation [Gazebo]</name>
+    <name>Gazebo</name>
 
     <module>
             <name>yarplogger</name>
